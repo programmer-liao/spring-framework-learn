@@ -245,10 +245,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @throws BeansException if the bean could not be created
 	 */
 	@SuppressWarnings("unchecked")
+	// 三级缓存解决循环依赖问题
 	protected <T> T doGetBean(
 			String name, @Nullable Class<T> requiredType, @Nullable Object[] args, boolean typeCheckOnly)
 			throws BeansException {
 
+		// 统一名称，比如转换别名
 		String beanName = transformedBeanName(name);
 		Object beanInstance;
 

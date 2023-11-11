@@ -193,6 +193,8 @@ public abstract class ClassUtils {
 	 */
 	@Nullable
 	public static ClassLoader getDefaultClassLoader() {
+		// 获取默认类加载器
+		// 尝试获取顺序：线程、类、系统
 		ClassLoader cl = null;
 		try {
 			cl = Thread.currentThread().getContextClassLoader();

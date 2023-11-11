@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--xsd文件在：spring-beans/resources/org/factory/xml/spring-beans.xsd目录-->
+<!--里面有各种属性的说明-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="myTestBean" class="com.dezhi.learn.spring.ioc.step01.MyTestBean"/>
+
+</beans>

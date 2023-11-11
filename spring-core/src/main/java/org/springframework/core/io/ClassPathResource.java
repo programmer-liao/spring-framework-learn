@@ -54,7 +54,13 @@ public class ClassPathResource extends AbstractFileResolvingResource {
 	private Class<?> clazz;
 
 
-	/**
+	/**	private final String path;
+
+	 @Nullable
+	 private ClassLoader classLoader;
+
+	 @Nullable
+	 private Class<?> clazz;
 	 * Create a new {@code ClassPathResource} for {@code ClassLoader} usage.
 	 * A leading slash will be removed, as the ClassLoader resource access
 	 * methods will not accept it.
@@ -79,6 +85,7 @@ public class ClassPathResource extends AbstractFileResolvingResource {
 	 */
 	public ClassPathResource(String path, @Nullable ClassLoader classLoader) {
 		Assert.notNull(path, "Path must not be null");
+		// 规范化（统一）文件路径，统一文件路径格式
 		String pathToUse = StringUtils.cleanPath(path);
 		if (pathToUse.startsWith("/")) {
 			pathToUse = pathToUse.substring(1);

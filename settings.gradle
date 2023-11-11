@@ -61,3 +61,9 @@ settings.gradle.projectsLoaded {
 		}
 	}
 }
+include 'spring-learn'
+include 'spring-learn:spring-learn-ioc'
+findProject(':spring-learn:spring-learn-ioc')?.name = 'spring-learn-ioc'
+include 'spring-learn:spring-learn-ioc:spring-learn-ioc-01'
+findProject(':spring-learn:spring-learn-ioc:spring-learn-ioc-01')?.name = 'spring-learn-ioc-01'
+
