@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--xsd文件在：spring-beans/resources/org/factory/xml/spring-beans.xsd目录-->
+<!--里面有各种属性的说明-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 制造循环依赖 A依赖B B依赖C C依赖A-->
+	<bean id="a" class="com.dezhi.learn.spring.ioc.step02.A">
+		<!-- A使用sett方式注入B -->
+		<property name="b" ref="b"/>
+	</bean>
+
+	<bean id="b" class="com.dezhi.learn.spring.ioc.step02.B">
+		<!-- B采用构造器注入C（这里没别的意思，就想尝试不同注入方式）-->
+		<constructor-arg ref="c"/>
+	</bean>
+
+	<bean id="c" class="com.dezhi.learn.spring.ioc.step02.C">
+		<!-- A使用sett方式注入C -->
+		<property name="a" ref="a"/>
+	</bean>
+</beans>

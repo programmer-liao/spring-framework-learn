@@ -1,11 +1,11 @@
 pluginManagement {
 	repositories {
-		maven {
-			url 'https://maven.aliyun.com/repository/public/'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/spring/'
-		}
+//		maven {
+//			url 'https://maven.aliyun.com/repository/public/'
+//		}
+//		maven {
+//			url 'https://maven.aliyun.com/repository/spring/'
+//		}
 		mavenCentral()
 		gradlePluginPortal()
 		maven { url "https://repo.spring.io/release" }
@@ -66,4 +66,6 @@ include 'spring-learn:spring-learn-ioc'
 findProject(':spring-learn:spring-learn-ioc')?.name = 'spring-learn-ioc'
 include 'spring-learn:spring-learn-ioc:spring-learn-ioc-01'
 findProject(':spring-learn:spring-learn-ioc:spring-learn-ioc-01')?.name = 'spring-learn-ioc-01'
+include 'spring-learn:spring-learn-ioc:spring-learn-ioc-02'
+findProject(':spring-learn:spring-learn-ioc:spring-learn-ioc-02')?.name = 'spring-learn-ioc-02'
 
