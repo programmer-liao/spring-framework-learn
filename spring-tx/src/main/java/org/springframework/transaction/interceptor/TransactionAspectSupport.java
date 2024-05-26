@@ -385,10 +385,12 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 			try {
 				// This is an around advice: Invoke the next interceptor in the chain.
 				// This will normally result in a target object being invoked.
+				// 真正执行业务代码的逻辑
 				retVal = invocation.proceedWithInvocation();
 			}
 			catch (Throwable ex) {
 				// target invocation exception
+				// 抛异常之后决定是否回滚还是继续提交
 				completeTransactionAfterThrowing(txInfo, ex);
 				throw ex;
 			}
@@ -667,8 +669,11 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 				logger.trace("Completing transaction for [" + txInfo.getJoinpointIdentification() +
 						"] after exception: " + ex);
 			}
+			// 当抛出异常时首先判断当前是否存在事务，这是基础依据
+			// 并且判断抛出的异常是RuntimeException或者Error的类型
 			if (txInfo.transactionAttribute != null && txInfo.transactionAttribute.rollbackOn(ex)) {
 				try {
+					// 根据TransactionStatus信息进行回滚处理
 					txInfo.getTransactionManager().rollback(txInfo.getTransactionStatus());
 				}
 				catch (TransactionSystemException ex2) {
@@ -684,6 +689,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 			else {
 				// We don't roll back on this exception.
 				// Will still roll back if TransactionStatus.isRollbackOnly() is true.
+				// 如果不满足回滚条件即使抛出异常也同样提交
 				try {
 					txInfo.getTransactionManager().commit(txInfo.getTransactionStatus());
 				}
