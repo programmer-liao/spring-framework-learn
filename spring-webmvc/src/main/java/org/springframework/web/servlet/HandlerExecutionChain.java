@@ -146,6 +146,7 @@ public class HandlerExecutionChain {
 		for (int i = 0; i < this.interceptorList.size(); i++) {
 			HandlerInterceptor interceptor = this.interceptorList.get(i);
 			if (!interceptor.preHandle(request, response, this.handler)) {
+				// 完成处理激活触发器
 				triggerAfterCompletion(request, response, null);
 				return false;
 			}

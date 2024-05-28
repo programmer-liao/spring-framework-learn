@@ -32,6 +32,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @author Sebastien Deleuze
  * @since 4.2
  */
+// Http跨域工具
 public abstract class CorsUtils {
 
 	/**

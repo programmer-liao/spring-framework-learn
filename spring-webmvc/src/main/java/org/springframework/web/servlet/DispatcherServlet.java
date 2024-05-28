@@ -306,6 +306,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	private boolean cleanupAfterInclude = true;
 
 	/** MultipartResolver used by this servlet. */
+	// 主要用来处理文件上传
 	@Nullable
 	private MultipartResolver multipartResolver;
 
@@ -318,6 +319,8 @@ public class DispatcherServlet extends FrameworkServlet {
 	private ThemeResolver themeResolver;
 
 	/** List of HandlerMappings used by this servlet. */
+	// 当客户端发出Request时DispatcherServlet会将Request提交给HandlerMapping
+	// 然后HandlerMapping根据WebApplicationContext的配置回传给DispatcherServlet相应的Controller
 	@Nullable
 	private List<HandlerMapping> handlerMappings;
 
@@ -338,6 +341,8 @@ public class DispatcherServlet extends FrameworkServlet {
 	private FlashMapManager flashMapManager;
 
 	/** List of ViewResolvers used by this servlet. */
+	// 当Controller将请求处理结果放入到ModelAndView中以后，
+	// DispatcherServlet会根据ModelAndView选择合适的视图进行渲染
 	@Nullable
 	private List<ViewResolver> viewResolvers;
 
@@ -488,6 +493,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	@Override
 	protected void onRefresh(ApplicationContext context) {
+		// 初始化步骤，主要用于刷新Spring在Web功能实现中所必须使用的全局变量
 		initStrategies(context);
 	}
 
@@ -496,14 +502,23 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
 	 */
 	protected void initStrategies(ApplicationContext context) {
+		// 初始化MultipartResolver
 		initMultipartResolver(context);
+		// 初始化LocaleResolver
 		initLocaleResolver(context);
+		// 初始化ThemeResolver
 		initThemeResolver(context);
+		// 初始化tHandlerMappings
 		initHandlerMappings(context);
+		// 初始化LocaleResolver
 		initHandlerAdapters(context);
+		// 初始化HandlerExceptionResolvers
 		initHandlerExceptionResolvers(context);
+		// 初始化RequestToViewNameTranslator
 		initRequestToViewNameTranslator(context);
+		// 初始化ViewResolvers
 		initViewResolvers(context);
+		// 初始化FlashMapManager
 		initFlashMapManager(context);
 	}
 
@@ -962,6 +977,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		}
 
 		try {
+			// 核心逻辑，其他步骤都是铺垫
 			doDispatch(request, response);
 		}
 		finally {
@@ -1041,12 +1057,16 @@ public class DispatcherServlet extends FrameworkServlet {
 			Exception dispatchException = null;
 
 			try {
+				// 如果是MultipartContent类型的request，
+				// 则转换request为MultipartHttpServletRequest的request
 				processedRequest = checkMultipart(request);
 				multipartRequestParsed = (processedRequest != request);
 
 				// Determine handler for the current request.
+				// 根据request信息寻找对应的Handler链
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null) {
+					// 如果没有找到对应的handler，则通过response反馈错误信息
 					noHandlerFound(processedRequest, response);
 					return;
 				}
@@ -1055,6 +1075,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
 				// Process last-modified header, if supported by the handler.
+				// 如果当前handler支持last-modified头处理
 				String method = request.getMethod();
 				boolean isGet = HttpMethod.GET.matches(method);
 				if (isGet || HttpMethod.HEAD.matches(method)) {
@@ -1064,6 +1085,7 @@ public class DispatcherServlet extends FrameworkServlet {
 					}
 				}
 
+				// 拦截器的preHandler方法的调用
 				if (!mappedHandler.applyPreHandle(processedRequest, response)) {
 					return;
 				}
@@ -1259,6 +1281,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * @param request current HTTP request
 	 * @return the HandlerExecutionChain, or {@code null} if no handler could be found
 	 */
+	// 寻找request对应的HandlerExecutionChain
 	@Nullable
 	protected HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {
 		if (this.handlerMappings != null) {
@@ -1287,6 +1310,7 @@ public class DispatcherServlet extends FrameworkServlet {
 					new ServletServerHttpRequest(request).getHeaders());
 		}
 		else {
+			// 这就是404源头
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
